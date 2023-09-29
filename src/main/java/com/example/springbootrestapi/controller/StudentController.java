@@ -1,6 +1,7 @@
 package com.example.springbootrestapi.controller;
 
 import com.example.springbootrestapi.bean.Student;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class StudentController {
     }
 
     // Spring Boot REST API Request Param
-    // http://localhost:8080/students?id=1&firstName=Mert&lastName=Yeşilbaş -> Request Parameter
+    // http://localhost:8080/students/query?id=1&firstName=Mert&lastName=Yeşilbaş -> Request Parameter
     @GetMapping("/students/query")
     public Student studentRequestvariable(
             @RequestParam int id,
@@ -44,6 +45,29 @@ public class StudentController {
     )
     {
         return new Student(id,firstName,lastName);
+    }
+
+    // Spring Boot REST API that handles HTTP POST Request
+    // @PostMapping and @RequestBody
+    @PostMapping("students/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Student createStudent(@RequestBody Student student){
+        return student;
+    }
+
+    // Spring boot REST API that handles HTTP PUT Request - updating existing resource
+    @PutMapping("students/{id}/update")
+//    @ResponseStatus(HTTPStatus)
+    public Student updateStudent(@RequestBody Student student,
+                                 @PathVariable("id") int studentId){
+        student.setId(studentId);
+        return student;
+    }
+
+    // Spring Boot REST API that handles HTTP DELETE Request - deleting existing resource
+    @DeleteMapping("students/{id}/delete")
+    public void deleteStudent(@PathVariable("id") int studentId){
+        System.out.println("Deleted "+studentId);
     }
 
 }
